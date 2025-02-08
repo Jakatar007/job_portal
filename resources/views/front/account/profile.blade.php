@@ -80,14 +80,14 @@
 
 @section('customJs')
     <script type="text/javascript">
-        $("form#userForm").submit(function(e) {
+        $("#userForm").submit(function(e) {
             e.preventDefault();
 
             $.ajax({
                 url: '{{ route('account.updateProfile') }}',
-                type: 'put',
+                type: 'PUT',
                 dataType: 'json',
-                data: $("form#userForm").serializeArray(),
+                data: $("#userForm").serializeArray(),
                 success: function(response) {
 
                     if (response.status == true) {
