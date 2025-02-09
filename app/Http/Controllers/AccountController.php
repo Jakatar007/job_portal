@@ -250,21 +250,22 @@ class AccountController extends Controller
         ]);
     }
 
-    public function editJob(Request $request, $id) {
+    public function editJob(Request $request, $id)
+    {
 
         $categories = Category::orderBy('name', 'ASC')->where('status', 1)->get();
 
         $jobTypes = JobType::orderBy('name', 'ASC')->where('status', 1)->get();
-        
+
         $job = Job::where([
             'user_id' => Auth::user()->id,
-            'id' => $id  
+            'id' => $id
         ])->first();
 
         if ($job == null) {
             abort(404);
         }
-        return view('front.account.job.edit',[
+        return view('front.account.job.edit', [
             'categories' => $categories,
             'jobTypes' => $jobTypes,
             'job' => $job
@@ -320,5 +321,27 @@ class AccountController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
+    }
+
+    public function deleteJob(Request $request)
+    {
+        $job = Job::where([
+            'user_id' => Auth::user()->id,
+            'id' => $request->jobId
+        ])->first();
+
+        if ($job == null) {
+            session()->flash('error', 'Either job deleted or not found!');
+            return response()->json([
+                'status' => true,
+                'errors' => []  
+            ]);
+        }
+
+        Job::where('id', $job->id)->delete();
+        session()->flash('success', 'Job deleted successfully!');
+        return response()->json([
+            'status' => true
+        ]);
     }
 }
