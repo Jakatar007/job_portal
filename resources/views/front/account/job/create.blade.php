@@ -165,13 +165,14 @@
     <script type="text/javascript">
         $("#createJobForm").submit(function(e) {
             e.preventDefault();
-
+            $("button[type='submit']").prop('disabled', true);
             $.ajax({
                 url: '{{ route('account.saveJob') }}',
                 type: 'POST',
                 dataType: 'json',
                 data: $("#createJobForm").serializeArray(),
                 success: function(response) {
+                    $("button[type='submit']").prop('disabled', false);
 
                     if (response.status == true) {
                         $('#title').removeClass('is-invalid').siblings('p').removeClass(
