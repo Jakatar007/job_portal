@@ -53,7 +53,7 @@ class JobsController extends Controller
         }
 
         $jobs = $jobs->with('jobType', 'category');
-        if ($request->sort == '0'){
+        if ($request->sort == '0') {
             $jobs = $jobs->orderBy('created_at', 'ASC');
         } else {
             $jobs = $jobs->orderBy('created_at', 'DESC');
@@ -70,5 +70,20 @@ class JobsController extends Controller
             'jobTypeArray' => $jobTypeArray,
 
         ]);
+    }
+
+    //This method will show job detail page
+    public function detail($id)
+    {
+        $job = Job::where([
+            'id' => $id,
+            'status' => 1
+        ])->with('jobType', 'category')->first();
+
+        if ($job == null) {
+            abort(404);
+        }
+
+        return view('front.jobDetail',['job' => $job]);
     }
 }
