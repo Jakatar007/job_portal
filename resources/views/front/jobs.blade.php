@@ -11,7 +11,7 @@
                     <div class="align-end">
                         <select name="sort" id="sort" class="form-control">
                             <option value="1" {{ \Request::get('sort') == '1' ? 'selected' : '' }}>Latest</option>
-                            <option value="0" {{ \Request::get('sort') == '0' ? 'selected' : ''  }}>Oldest</option>
+                            <option value="0" {{ \Request::get('sort') == '0' ? 'selected' : '' }}>Oldest</option>
                         </select>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Search</button>
-                            <a href="{{ route("jobs") }}" class="btn btn-primary mt-3">Reset</a>
+                            <a href="{{ route('jobs') }}" class="btn btn-primary mt-3">Reset</a>
                         </div>
                     </form>
                 </div>
@@ -102,47 +102,41 @@
                         <div class="job_lists">
                             <div class="row">
                                 @if ($jobs->isNotEmpty())
-                                    @foreach ($jobs as $job)
-                                        <div class="col-md-4">
-                                            <div class="card border-0 p-3 shadow mb-4">
-                                                <div class="card-body">
-                                                    <h3 class="border-0 fs-5 pb-2 mb-0">{{ $job->title }}</h3>
-
-                                                    <p>
-                                                        {{ Str::words($job->description, $words = 10, '...') }}
+                                @foreach ($jobs as $job)
+                                    <div class="col-md-4">
+                                        <div class="card border-0 p-3 shadow mb-4">
+                                            <div class="card-body">
+                                                <h3 class="border-0 fs-5 pb-2 mb-0">{{ $job->title }}</h3>
+                                                <p>{{ Str::words($job->description, $words = 10, '...') }}</p>
+                                                <div class="bg-light p-3 border">
+                                                    <p class="mb-0">
+                                                        <span class="fw-bolder"><i class="fa fa-map-marker"></i></span>
+                                                        <span class="ps-1">{{ $job->location }}</span>
                                                     </p>
-
-                                                    <div class="bg-light p-3 border">
+                                                    <p class="mb-0">
+                                                        <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
+                                                        <span class="ps-1">{{ $job->jobType->name }}</span>
+                                                    </p>
+                                                    <p>Keywords: {{ $job->keywords }}</p>
+                                                    <p>Category: {{ $job->category->name }}</p>
+                                                    <p>Experience: {{ $job->experience }}</p>
+                                                    @if ($job->salary !== null && $job->salary !== '')
                                                         <p class="mb-0">
-                                                            <span class="fw-bolder"><i class="fa fa-map-marker"></i></span>
-                                                            <span class="ps-1">{{ $job->location }}</span>
+                                                            <span class="fw-bolder"><i class="fa fa-usd"></i></span>
+                                                            <span class="ps-1">{{ $job->salary }}</span>
                                                         </p>
-                                                        <p class="mb-0">
-                                                            <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
-                                                            <span class="ps-1">{{ $job->jobType->name }}</span>
-                                                        </p>
-                                                        {{-- <p>Keywords: {{ $job->keywords }}</p>
-                                                        <p>Category: {{ $job->category->name }}</p>
-                                                        <p>Experience: {{ $job->experience }}</p> --}}
-
-                                                        @if ($job->salary !== null && $job->salary !== '')
-                                                            <p class="mb-0">
-                                                                <span class="fw-bolder"><i class="fa fa-usd"></i></span>
-                                                                <span class="ps-1">{{ $job->salary }}</span>
-                                                            </p>
-                                                        @endif
-                                                    </div>
-
-                                                    <div class="d-grid mt-3">
-                                                        <a href="{{ route('jobDetail', $job->id) }}" class="btn btn-primary btn-lg">Details</a>
-                                                    </div>
+                                                    @endif
+                                                </div>
+                                                <div class="d-grid mt-3">
+                                                    <a href="{{ route('jobDetail', $job->id) }}" class="btn btn-primary btn-lg">Details</a>
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
-                                @endif
+                                    </div>
+                                @endforeach
+                            @else
                                 <div class="col-md-12">Job not found</div>
-
+                            @endif                            
                             </div>
                         </div>
                     </div>
