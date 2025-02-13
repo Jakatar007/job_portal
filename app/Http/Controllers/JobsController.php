@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Job;
-use App\Models\JobAppliction;
+use App\Models\JobApplication;
 use App\Models\JobType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -121,7 +121,7 @@ class JobsController extends Controller
         }
 
         //You can not apply on a job twice
-        $jobApplictionCount = JobAppliction::where([
+        $jobApplictionCount = JobApplication::where([
             'user_id' => Auth::user()->id,
             'job_id' => $id
         ])->count();
@@ -136,10 +136,10 @@ class JobsController extends Controller
         }
 
         // Save the job application
-        $application = new JobAppliction();
+        $application = new JobApplication();
         $application->job_id = $id;
         $application->user_id = Auth::user()->id;
-        $application->employer_id = $employer_id; 
+        $application->employer_id = $employer_id;
         $application->applied_date = now();
         $application->save();
 
